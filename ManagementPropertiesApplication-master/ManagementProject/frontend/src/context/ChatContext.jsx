@@ -27,7 +27,10 @@ export const ChatProvider = ({ children }) => {
     }, [user, token])
 
     const connect = () => {
-        const socket = new SockJS('/ws')
+        const wsUrl = import.meta.env.VITE_API_URL 
+            ? import.meta.env.VITE_API_URL.replace('/api', '/ws') 
+            : '/ws'
+        const socket = new SockJS(wsUrl)
         stompClient.current = new Client({
             webSocketFactory: () => socket,
             connectHeaders: {

@@ -2,8 +2,10 @@
  * Utility functions for formatting data across the application.
  */
 
-// Centralized Backend URL
-const API_BASE_URL = 'http://localhost:8080';
+// Centralized Backend URL (Derived from VITE_API_URL or defaults to empty for relative paths)
+const API_BASE_URL = import.meta.env.VITE_API_URL 
+    ? import.meta.env.VITE_API_URL.replace('/api', '') 
+    : '';
 
 /**
  * Resolves an image path to a full URL.
