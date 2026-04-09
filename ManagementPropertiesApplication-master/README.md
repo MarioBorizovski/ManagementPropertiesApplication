@@ -1,212 +1,79 @@
-# PropManager 🏠
-### Enterprise Property Booking Management System
+# Enterprise Property Booking & Management System 🏢
 
-A full-stack web application for managing property listings and bookings, built with **Spring Boot** and **React**.
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
+![React](https://img.shields.io/badge/React-18.x-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 
-![Java](https://img.shields.io/badge/Java-17+-orange) ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-green) ![React](https://img.shields.io/badge/React-18-blue) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-blue) ![JWT](https://img.shields.io/badge/Auth-JWT-yellow)
+A comprehensive, production-ready full-stack application for real estate listing management. This platform bridges high-security backend standards with a premium, responsive frontend experience, designed specifically for scalability and ease of deployment.
 
----
+## 🏗️ Architecture & Technical Highlights
 
-## Features
+The system is engineered for professional-grade performance and maintainability:
 
-### Role-Based Access Control
-Three roles with distinct permissions:
+- **Real-Time Infrastructure:** Built on **STOMP over WebSockets**, enabling zero-latency communication between users and agents via a persistent global chat system.
+- **Property Audit Trail:** A sophisticated snapshot system that tracks property states. Agent edits on approved listings are snapshotted, allowing Admins to review changes and potentially revert to previous versions if an edit is rejected.
+- **Search Intelligence:** 
+  - **Automated Geocoding:** Deep integration with the **Google Maps Geocoding API** to automatically resolve coordinates from plain-text addresses.
+  - **Places Integration:** Native Google Places Autocomplete implementation for standardized address entry.
+- **Booking Intelligence:** Dynamic date-blocking logic ensures that calendars only show genuinely available slots, automatically calculated from backend booking ranges.
+- **Advanced RBAC:** Strictly enforced role hierarchies (ADMIN, AGENT, USER) ensuring secure access to sensitive management dashboards.
 
-| Feature | Admin | Agent | User |
-|---|---|---|---|
-| View properties | ✅ | ✅ | ✅ |
-| Create property | ✅ | ✅ | ❌ |
-| Edit/delete property | ✅ | Own only | ❌ |
-| Book property | ❌ | ❌ | ✅ |
-| Confirm/reject booking | ✅ | Own properties | ❌ |
-| Cancel booking | ✅ | ✅ | Own only |
-| Manage all users | ✅ | ❌ | ❌ |
-| Change user roles | ✅ | ❌ | ❌ |
+## 🌟 Key Features
 
-### Properties
-- Search and filter by city, type, price range, and minimum bedrooms
-- Property types: `APARTMENT`, `HOUSE`, `VILLA`, `OFFICE`
-- Toggle availability on/off
-- Agent-specific listings dashboard
-- Pagination on all listing endpoints
+### 👑 Admin Empowerment
+- **User Management:** Full control over user accounts, including role switching and agent verification.
+- **Property Approval Workflow:** Dedicated queue for reviewing new and modified property listings with audit trail support.
+- **Global Statistics:** Real-time dashboard view of platform activity (total users, active properties, booking counts).
 
-### Bookings
-- Full booking lifecycle: `PENDING` → `CONFIRMED` / `REJECTED` / `CANCELLED`
-- Automatic date conflict detection — prevents double bookings
-- Guest count validation against property maximum
-- Special requests field
+### 💼 Agent Tools
+- **Listing Lifecycle:** Create and manage rich property listings with multi-image support and main-image designation.
+- **Booking Management:** Interface for confirming or rejecting user booking requests in real-time.
+- **Presence Control:** Instantly toggle property availability to hide/show listings from public search.
 
-### Auth & Security
-- JWT-based stateless authentication
-- BCrypt password hashing
-- Role-based method-level security (`@PreAuthorize`)
-- Protected routes on the frontend
+### 👤 User Experience
+- **Interactive Discovery:** Map-based search with custom price markers and detailed filtering.
+- **Secure Authentication:** Verified email registration, JWT stateless sessions, and secure async password reset flows.
+- **Ratings & Reviews:** Comprehensive feedback system with computed average ratings.
 
-### Admin Dashboard
-- Overview of total users, properties, and bookings
-- Manage all users — change roles, delete accounts
-- View and delete all bookings
-- View all properties across agents
+## 🎨 UI/UX Excellence
 
-### Agent Dashboard
-- Manage own property listings
-- View and action bookings for own properties (confirm/reject)
+- **Premium Aesthetic:** Curated "Warm Beige" design system with professional dark mode support.
+- **Micro-Animations:** Seamless transitions and hover effects using Tailwind CSS and Framer-inspired interactions.
+- **Responsive Layouts:** Mobile-first architecture ensuring a flawless experience across all device types.
 
----
+## 🛠️ Tech Stack
 
-## Tech Stack
+- **Backend:** Java 21, Spring Boot 3.2, Spring Security (JWT), Spring Data JPA, H2/PostgreSQL, JavaMailSender.
+- **Frontend:** React 18, Vite, Tailwind CSS, Lucide Icons, Axios, React Hot Toast.
+- **DevOps:** Docker, Docker Compose, Multi-stage builds.
 
-**Backend**
-- Java 17 + Spring Boot 3
-- Spring Security + JWT
-- Spring Data JPA / Hibernate
-- PostgreSQL
-- Lombok + Maven
-
-**Frontend**
-- React 18 + Vite
-- React Router DOM 6
-- Axios
-- Tailwind CSS
-- Lucide React + React Hot Toast
-
----
-
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
-- Java 17+
-- Node.js 18+
-- PostgreSQL 15+
-- Maven 3.x
+- Docker & Docker Compose
+- Google Maps API Key
+- Mailtrap Account (for testing email flows)
 
-### 1. Database Setup
-```sql
-CREATE DATABASE property_management_db;
-```
+### Quick Start with Docker
+1. Clone the repository and configure `.env` (use `.env.example` as a template).
+2. Start the containerized stack:
+   ```bash
+   docker-compose up --build
+   ```
+3. Access the platforms:
+   - **Frontend:** `http://localhost:80`
+   - **Backend API:** `http://localhost:8080`
 
-### 2. Backend Configuration
-Edit `src/main/resources/application.yml`:
-```yaml
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/property_management_db
-    username: your_username
-    password: your_password
-  jpa:
-    hibernate:
-      ddl-auto: update
+### Manual Development Setup
+For local development without Docker, refer to the [Detailed Setup Guide](./ManagementProject/README.md).
 
-app:
-  jwt:
-    secret: your_jwt_secret_key
-    expiration: 86400000
-```
-
-### 3. Run the Backend
+## 🧪 Testing
+The backend is covered by an extensive suite of integration tests:
 ```bash
-./mvnw spring-boot:run
-```
-API starts on `http://localhost:8080`
-
-> On first startup, the `DataSeeder` automatically creates roles (`ROLE_ADMIN`, `ROLE_AGENT`, `ROLE_USER`) and a default Super Admin account.
-
-### 4. Run the Frontend
-```bash
-cd frontend
-npm install
-npm run dev
-```
-App available at `http://localhost:3000`
-
----
-
-## API Endpoints
-
-### Auth
-| Method | Endpoint | Access | Description |
-|---|---|---|---|
-| POST | `/api/auth/register` | Public | Register new user |
-| POST | `/api/auth/login` | Public | Login, returns JWT |
-
-### Users
-| Method | Endpoint | Access | Description |
-|---|---|---|---|
-| GET | `/api/users` | Admin | Get all users |
-| GET | `/api/users/me` | Authenticated | Get own profile |
-| PUT | `/api/users/me` | Authenticated | Update own profile |
-| DELETE | `/api/users/{id}` | Admin | Delete user |
-| PATCH | `/api/users/{id}/role` | Admin | Change user role |
-
-### Properties
-| Method | Endpoint | Access | Description |
-|---|---|---|---|
-| GET | `/api/properties` | Authenticated | Search/filter (paginated) |
-| GET | `/api/properties/{id}` | Authenticated | Get by ID |
-| POST | `/api/properties` | Admin/Agent | Create property |
-| PUT | `/api/properties/{id}` | Admin/Agent | Update property |
-| DELETE | `/api/properties/{id}` | Admin/Agent | Delete property |
-| PATCH | `/api/properties/{id}/availability` | Admin/Agent | Toggle availability |
-| GET | `/api/properties/my-listings` | Admin/Agent | Own listings |
-
-**Query Parameters for GET `/api/properties`:**
-- `city` — filter by city (partial match)
-- `type` — filter by type (`APARTMENT`, `HOUSE`, `VILLA`, `OFFICE`)
-- `minPrice` / `maxPrice` — price range per night
-- `minBedrooms` — minimum bedroom count
-- `page` / `size` — pagination
-
-### Bookings
-| Method | Endpoint | Access | Description |
-|---|---|---|---|
-| GET | `/api/bookings` | Admin | All bookings (paginated) |
-| GET | `/api/bookings/my-bookings` | Authenticated | Own bookings |
-| GET | `/api/bookings/{id}` | Owner/Agent/Admin | Get by ID |
-| POST | `/api/bookings` | User | Create booking |
-| PATCH | `/api/bookings/{id}/cancel` | Owner/Admin | Cancel |
-| PATCH | `/api/bookings/{id}/confirm` | Agent/Admin | Confirm |
-| PATCH | `/api/bookings/{id}/reject` | Agent/Admin | Reject |
-| DELETE | `/api/bookings/{id}` | Admin | Delete |
-
----
-
-## Database Schema
-
-```
-users         — id, first_name, last_name, email, password, phone, role_id, active, created_at
-roles         — id, name
-properties    — id, title, description, address, city, country, type, price_per_night,
-                bedrooms, bathrooms, max_guests, available, agent_id, created_at
-bookings      — id, property_id, user_id, check_in_date, check_out_date, guests,
-                total_price, special_requests, status, created_at
+cd ManagementProject
+./mvnw test
 ```
 
 ---
-
-## Project Structure
-
-```
-ManagementProject/
-├── src/main/java/org/example/managementproject/
-│   ├── config/          # Security config, JWT, DataSeeder
-│   ├── controller/      # REST controllers
-│   ├── dto/             # Request & Response DTOs
-│   ├── model/           # JPA entities
-│   ├── repository/      # Spring Data JPA repositories
-│   ├── security/        # JWT filter & utilities
-│   └── service/         # Business logic
-├── src/main/resources/
-│   └── application.yml
-└── frontend/
-    ├── src/
-    │   ├── api/         # Axios config & service functions
-    │   ├── components/  # Navbar, ProtectedRoute
-    │   ├── context/     # AuthContext
-    │   └── pages/       # AdminDashboard, Properties, MyBookings, etc.
-    └── package.json
-```
-
----
-
-## License
-MIT
+*Developed by [Mario Borizovski](https://github.com/MarioBorizovski)*
