@@ -1,0 +1,62 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ManagementProject
+
+  # ─── Database (PostgreSQL) ──────────────────────────────────────────────────
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/property_management_db}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:1233}
+    driver-class-name: org.postgresql.Driver
+
+  # ─── JPA / Hibernate ────────────────────────────────────────────────────────
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  # ─── Mailtrap SMTP ─────────────────────────────────────────────────────────
+  mail:
+    host: ${MAIL_HOST:sandbox.smtp.mailtrap.io}
+    port: ${MAIL_PORT:2525}
+    username: ${MAIL_USERNAME:3563e8a3595092}
+    password: ${MAIL_PASSWORD:675e24d7d3eb67}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  # ─── File Upload ────────────────────────────────────────────────────────────
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+# ─── Swagger ──────────────────────────────────────────────────────────────────
+springdoc:
+  swagger-ui:
+    path: /swagger
+
+# ─── App Config ───────────────────────────────────────────────────────────────
+app:
+  jwt:
+    secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+    expiration: 86400000   # 24 hours
+  upload:
+    dir: ${UPLOAD_DIR:uploads}
+  mail:
+    from: ${MAIL_FROM:noreply@propmanager.com}
+  google:
+    maps:
+      api-key: ${GOOGLE_MAPS_API_KEY:AIzaSyAq0hlxTOzNIBDu_4C1sNlZ2HVL8D_thC4}
