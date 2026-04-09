@@ -8,15 +8,10 @@
 ---
 
 ## ✨ The Vision
-In the world of real estate, trust and speed are everything. I built this platform to bridge the gap between a **rock-solid enterprise backend** and a **premium, fluid frontend**. It's not just a listing site; it's a complete ecosystem designed to handle everything from the first property "hello" to the final booking confirmation—all in real-time.
-
-> [!NOTE]
-> This project was developed by **Mario Borizovski** to showcase a modern approach to full-stack architecture, emphasizing high-security standards, real-time messaging, and intelligent data management.
+In the world of real estate, trust and speed are everything. I built this platform to bridge the gap between a **rock-solid enterprise backend** and a **premium, fluid frontend**.
 
 ---
 
-## 📖 The Story Behind the Project
-When I started this project, I noticed a common pattern in property management: data often feels static, and approvals feel slow. I wanted to solve that. 
 
 I implemented a **Real-Time Synchronous Messaging** system using WebSockets so that users and agents never have to refresh their screens to talk. I also built a custom **Property Audit System**—if an agent edits a listing, the system captures a state "snapshot." This means a property never stays in a "broken" state; if an edit is rejected, it seamlessly reverts to its last known good version. It's about building a system that is as resilient as it is beautiful.
 
@@ -103,12 +98,5 @@ cd ManagementProject
 
 ---
 
-## 🤝 Let's Connect
-I'm always open to discussing architecture, full-stack patterns, or potential collaborations.
-
 - **Developer:** Mario Borizovski
 - **GitHub:** [MarioBorizovski](https://github.com/MarioBorizovski)
-- **Project Goal:** Showcasing production-ready Full-Stack Engineering.
-
----
-*Built with ❤️ and a lot of Java.*
