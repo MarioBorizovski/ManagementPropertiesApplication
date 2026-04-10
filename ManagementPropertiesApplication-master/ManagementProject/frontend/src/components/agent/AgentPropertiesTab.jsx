@@ -1,5 +1,6 @@
-import { Info, Upload, ToggleLeft, ToggleRight, Pencil, Trash2 } from 'lucide-react'
+import { Info, Upload, ToggleLeft, ToggleRight, Pencil, Trash2, Plus } from 'lucide-react'
 import { Badge } from '../ui/Badge'
+import { useNavigate } from 'react-router-dom'
 
 export const AgentPropertiesTab = ({ 
     properties, 
@@ -10,8 +11,25 @@ export const AgentPropertiesTab = ({
     onEdit, 
     onDelete 
 }) => {
+    const navigate = useNavigate()
     if (properties.length === 0) {
-        return <div className="text-center py-20 text-gray-400">No properties yet. Add one above!</div>
+        return (
+            <div className="flex flex-col items-center justify-center py-20 bg-surface rounded-2xl border-2 border-dashed border-gray-100">
+                <div className="w-16 h-16 bg-brand/5 text-brand rounded-full flex items-center justify-center mb-4">
+                    <Plus size={32} />
+                </div>
+                <h3 className="text-xl font-bold text-title mb-2">No properties yet</h3>
+                <p className="text-muted mb-8 max-w-xs text-center">
+                    Start earning by listing your property on our platform today.
+                </p>
+                <button 
+                    onClick={() => navigate('/property/new')}
+                    className="flex items-center gap-2 px-6 py-3 bg-brand text-white font-bold rounded-xl hover:bg-brand-hover transition-all shadow-lg shadow-brand/20 active:scale-95"
+                >
+                    Post Your First Property
+                </button>
+            </div>
+        )
     }
 
     return (

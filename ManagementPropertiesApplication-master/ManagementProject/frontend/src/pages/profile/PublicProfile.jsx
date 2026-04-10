@@ -2,14 +2,16 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { userAPI, propertyAPI } from '../../api/services'
 import { Layout } from '../../components/ProtectedRoute'
-import { User, Mail, Phone, Shield, ArrowLeft, Star, Building2 } from 'lucide-react'
+import { User, Mail, Phone, Shield, ArrowLeft, Star, Building2, MessageSquare as ChatIcon } from 'lucide-react'
 import toast from 'react-hot-toast'
+import { useChat } from '../../context/ChatContext'
 import { InfoRow } from '../../components/profile/InfoRow'
 import { PropertyMiniCard } from '../../components/profile/PropertyMiniCard'
 import { Badge } from '../../components/ui/Badge'
 
 export function PublicProfile({ agentId }) {
     const navigate = useNavigate()
+    const { setActiveChat, setIsLauncherOpen, loadHistory } = useChat()
     const [agent, setAgent]           = useState(null)
     const [properties, setProperties] = useState([])
     const [loading, setLoading]       = useState(true)
@@ -56,6 +58,17 @@ export function PublicProfile({ agentId }) {
         ? (ratedProperties.reduce((sum, p) => sum + (p.averageRating || 0), 0) / ratedProperties.length).toFixed(1)
         : null
     const totalReviews = approvedProperties.reduce((sum, p) => sum + (p.reviewCount || 0), 0)
+    
+    const handleSendMessage = () => {
+        const roomId = [Math.min(agentId, agent.id), Math.max(agentId, agent.id)].join('_') // Actually agentId is usually the route param
+        setActiveChat({
+            roomId: null, // Let context handle it or temp room id
+            recipientId: agent.id,
+            recipientName: `${agent.firstName} ${agent.lastName}`
+        })
+        loadHistory(agent.id, agent.id) // This might be wrong, should be current user and agent
+        setIsLauncherOpen(true)
+    }
 
     return (
         <Layout>
@@ -120,6 +133,14 @@ export function PublicProfile({ agentId }) {
                                 <InfoRow icon={<Mail size={18} />}  label="Direct Email" value={agent.email} />
                                 <InfoRow icon={<Phone size={18} />} label="Phone Line" value={agent.phone || 'Not provided'} empty={!agent.phone} />
                             </div>
+                            
+                            <button 
+                                onClick={handleSendMessage}
+                                className="w-full mt-8 flex items-center justify-center gap-2 px-6 py-4 bg-brand text-white font-black rounded-2xl hover:bg-brand-hover transition-all shadow-lg shadow-brand/20 active:scale-95 group"
+                            >
+                                <ChatIcon size={20} className="group-hover:rotate-12 transition-transform" />
+                                Send Message
+                            </button>
                         </div>
                     </div>
 

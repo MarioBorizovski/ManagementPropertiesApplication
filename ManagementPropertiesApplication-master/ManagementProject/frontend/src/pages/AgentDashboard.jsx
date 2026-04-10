@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 import { propertyAPI, bookingAPI } from '../api/services'
 import { Layout } from '../components/ProtectedRoute'
 import { useNavigate } from 'react-router-dom'
-import { Plus, X } from 'lucide-react'
+import { Plus, X, Shield } from 'lucide-react'
+import { useAuth } from '../context/AuthContext'
 import toast from 'react-hot-toast'
 import { Badge } from '../components/ui/Badge'
 import { PropertyForm } from '../components/agent/PropertyForm'
@@ -15,6 +16,7 @@ import { ChatInboxTab } from '../components/chat/ChatInboxTab'
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function AgentDashboard() {
     const navigate = useNavigate()
+    const { isAdmin } = useAuth()
     const [properties, setProperties] = useState([])
     const [bookings, setBookings]     = useState([])
     const [loading, setLoading]       = useState(true)
@@ -109,14 +111,27 @@ export default function AgentDashboard() {
 
     return (
         <Layout>
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
                 <div>
                     <h1 className="text-3xl font-bold text-title mb-1">Agent Dashboard</h1>
-                    <p className="text-muted">Manage your property listings</p>
+                    <p className="text-muted text-sm">Manage your property listings and bookings</p>
                 </div>
-                <button onClick={() => navigate('/property/new')} className="btn-primary flex items-center gap-2">
-                    <Plus size={18} /> Add Property
-                </button>
+                <div className="flex items-center gap-2">
+                    {isAdmin() && (
+                        <button 
+                            onClick={() => navigate('/admin/dashboard')}
+                            className="flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 text-sm font-semibold rounded-xl hover:bg-slate-200 transition-all active:scale-95"
+                        >
+                            <Shield size={16} /> Admin Panel
+                        </button>
+                    )}
+                    <button 
+                        onClick={() => navigate('/property/new')} 
+                        className="flex items-center gap-2 px-5 py-2.5 bg-brand text-white text-sm font-bold rounded-xl hover:bg-brand-hover transition-all shadow-lg shadow-brand/20 active:scale-95 whitespace-nowrap"
+                    >
+                        <Plus size={20} /> Post Property
+                    </button>
+                </div>
             </div>
 
 
@@ -153,6 +168,15 @@ export default function AgentDashboard() {
             ) : (
                 <ChatInboxTab />
             )}
+
+            {/* Floating Action Button for Add Property */}
+            <button
+                onClick={() => navigate('/property/new')}
+                className="fixed bottom-24 right-8 w-14 h-14 bg-brand text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-brand-hover hover:scale-110 active:scale-95 transition-all z-40"
+                title="Add New Property"
+            >
+                <Plus size={28} />
+            </button>
         </Layout>
     )
 }

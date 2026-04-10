@@ -39,9 +39,9 @@ public class PropertyService {
     public Page<PropertyResponse> searchProperties(
             String city, String type,
             Double minPrice, Double maxPrice,
-            Integer minBedrooms, Pageable pageable) {
+            Integer minBedrooms, Long agentId, Pageable pageable) {
         return propertyRepository
-                .findAll(PropertySpecification.withFilters(city, type, minPrice, maxPrice, minBedrooms), pageable)
+                .findAll(PropertySpecification.withFilters(city, type, minPrice, maxPrice, minBedrooms, agentId), pageable)
                 .map(this::toResponse);
     }
     @Transactional(readOnly = true)

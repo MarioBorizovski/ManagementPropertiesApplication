@@ -35,9 +35,10 @@ public class PropertyController {
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice,
             @RequestParam(required = false) Integer minBedrooms,
+            @RequestParam(required = false) Long agentId,
             Pageable pageable) {
         return ResponseEntity.ok(
-                propertyService.searchProperties(city, type, minPrice, maxPrice, minBedrooms, pageable));
+                propertyService.searchProperties(city, type, minPrice, maxPrice, minBedrooms, agentId, pageable));
     }
 
     @GetMapping("/{id}")

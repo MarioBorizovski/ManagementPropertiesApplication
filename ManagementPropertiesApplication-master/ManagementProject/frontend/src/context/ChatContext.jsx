@@ -92,6 +92,8 @@ export const ChatProvider = ({ children }) => {
 
     const sendMessage = (recipientId, content) => {
         if (stompClient.current && connected) {
+            const tempRoomId = [Math.min(user.userId, recipientId), Math.max(user.userId, recipientId)].join('_')
+            
             const chatMessage = {
                 sender: { id: user.userId },
                 recipient: { id: recipientId },
@@ -104,7 +106,6 @@ export const ChatProvider = ({ children }) => {
             })
             
             // Optimistic update
-            const tempRoomId = [Math.min(user.userId, recipientId), Math.max(user.userId, recipientId)].join('_')
             const optimisticMsg = {
                 ...chatMessage,
                 senderId: user.userId,
@@ -118,14 +119,19 @@ export const ChatProvider = ({ children }) => {
                 [tempRoomId]: [...(prev[tempRoomId] || []), optimisticMsg]
             }))
             
+            // If this was a new chat from a profile, update activeChat with the room ID
+            if (activeChat && !activeChat.roomId) {
+                setActiveChat(prev => ({ ...prev, roomId: tempRoomId }))
+            }
+
             setRooms(prev => {
                 if (prev.some(r => r.chatId === tempRoomId)) return prev
                 return [...prev, {
-                    id: Date.now(), // pessimistic unique id
+                    id: Date.now(),
                     chatId: tempRoomId,
                     senderId: user.userId,
                     senderName: `${user.firstName} ${user.lastName}`,
-                    recipientId: activeChat?.recipientId || recipientId,
+                    recipientId: recipientId,
                     recipientName: activeChat?.recipientName || 'New User'
                 }]
             })

@@ -15,7 +15,8 @@ public class PropertySpecification {
             String type,
             Double minPrice,
             Double maxPrice,
-            Integer minBedrooms) {
+            Integer minBedrooms,
+            Long agentId) {
 
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -47,6 +48,10 @@ public class PropertySpecification {
 
             if (minBedrooms != null) {
                 predicates.add(cb.greaterThanOrEqualTo(root.get("bedrooms"), minBedrooms));
+            }
+
+            if (agentId != null) {
+                predicates.add(cb.equal(root.get("agent").get("id"), agentId));
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));

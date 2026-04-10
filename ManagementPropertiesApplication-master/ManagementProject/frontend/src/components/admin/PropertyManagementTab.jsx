@@ -1,4 +1,4 @@
-import { Eye, ChevronLeft, ChevronRight, Plus, MapPin } from 'lucide-react'
+import { Eye, ChevronLeft, ChevronRight, Plus, MapPin, Trash2 } from 'lucide-react'
 import { Badge } from '../ui/Badge'
 import { useNavigate } from 'react-router-dom'
 import { propertyAPI } from '../../api/services'
@@ -12,7 +12,8 @@ export const PropertyManagementTab = ({
     onPageChange,
     onSelectProperty,
     onApprove,
-    onReject 
+    onReject,
+    onDelete
 }) => {
     const navigate = useNavigate()
     const thCls = 'text-left px-4 py-2.5 text-xs font-medium text-muted bg-surface-hover border-b border-gray-100'
@@ -54,7 +55,7 @@ export const PropertyManagementTab = ({
                 <table className="w-full">
                     <thead>
                         <tr>
-                            {['Title', 'City', 'Type', 'Price/night', 'Agent', 'Status', 'Available'].map(h => (
+                            {['Title', 'City', 'Type', 'Price/night', 'Agent', 'Status', 'Available', 'Actions'].map(h => (
                                 <th key={h} className={thCls}>{h}</th>
                             ))}
                         </tr>
@@ -72,6 +73,15 @@ export const PropertyManagementTab = ({
                                 <td className={`${tdCls} text-muted`}>{p.agentName}</td>
                                 <td className={tdCls}><Badge status={p.status} /></td>
                                 <td className={tdCls}><Badge status={p.available ? 'active' : 'inactive'} /></td>
+                                <td className={tdCls}>
+                                    <button 
+                                        onClick={() => onDelete(p.id)}
+                                        className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                        title="Delete property"
+                                    >
+                                        <Trash2 size={16} />
+                                    </button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
@@ -139,6 +149,13 @@ export const PropertyManagementTab = ({
                                             className="text-xs font-medium px-2.5 py-1 rounded-md bg-red-50 text-red-700 border border-red-200 hover:bg-red-100 transition-colors"
                                         >
                                             Reject
+                                        </button>
+                                        <button
+                                            onClick={() => onDelete(p.id)}
+                                            className="text-xs font-medium px-2.5 py-1 rounded-md bg-red-50 text-red-700 border border-red-200 hover:bg-red-100 transition-colors flex items-center gap-1"
+                                            title="Permanently delete property"
+                                        >
+                                            <Trash2 size={12} /> Delete
                                         </button>
                                     </div>
                                 </td>
